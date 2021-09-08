@@ -13,7 +13,7 @@ function run_analyze() {
     exit 1
   fi
 
-  result=$(flutter pub run dart_code_metrics:metrics .)
+  result=$(flutter pub run dart_code_metrics:metrics lib test)
   if [ "$result" != "" ]; then
     echo "flutter dart code metrics issues:"
     echo "$result"
