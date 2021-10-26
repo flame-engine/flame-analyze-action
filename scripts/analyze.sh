@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
 function run_analyze() {
-  if ! grep -q "dart_code_metrics" ./pubspec.yaml; then
-    echo "Missing dart_code_metrics in pubspec.yaml"
-    exit 1
-  fi
-
   result=$(flutter pub get 2>&1) # Sadly a pub get can block up our actions as it will retry forever if a package is not found, but this should atleast report everything else.
   if [ $? -ne 0 ]; then
     echo "flutter pub get failed:"
@@ -14,12 +9,6 @@ function run_analyze() {
   fi
 
   root=$(pwd)
-  result=$(flutter pub run dart_code_metrics:metrics $root)
-  if [ "$result" != "" ]; then
-    echo "flutter dart code metrics issues:"
-    echo "$result"
-    exit 1
-  fi
 
   result=$(flutter analyze .)
   if ! echo "$result" | grep -q "No issues found!"; then
